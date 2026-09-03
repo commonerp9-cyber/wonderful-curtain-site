@@ -19,7 +19,7 @@ export const categories: Array<{ id: Category; label: string }> = [
 
 export const subcategories: Record<Category, Array<string>> = {
   curtain: ['암막커튼', '쉬어커튼', '리넨커튼'],
-  component: ['씽', '핀', '브라켓'],
+  component: ['씽', '핀', '브라켓', '레일', '기타'],
   machine: ['미싱기', '형상기', '재단기'],
 }
 
@@ -75,6 +75,70 @@ const products: Array<Product> = [
   {
     id: 4,
     name: '커튼링 세트 (스테인리스)',
+    category: 'component',
+    subcategory: '씽',
+    image: '/placeholder.png',
+    shortDescription: '부드러운 개폐감의 스테인리스 커튼링',
+    description:
+      '내구성이 뛰어난 스테인리스 소재로 제작되어 오랜 사용에도 변형이 적습니다. 다양한 커튼 원단과 레일에 호환됩니다.',
+    specs: [
+      { label: '소재', value: '스테인리스 스틸' },
+      { label: '구성', value: '10개입 1세트' },
+      { label: '내경', value: '4cm' },
+      { label: '호환', value: '일반형 커튼레일' },
+    ],
+  },
+  {
+    id: 10,
+    name: '씽(중간)',
+    category: 'component',
+    subcategory: '씽',
+    image: '/placeholder.png',
+    shortDescription: '부드러운 개폐감의 스테인리스 커튼링',
+    description:
+      '내구성이 뛰어난 스테인리스 소재로 제작되어 오랜 사용에도 변형이 적습니다. 다양한 커튼 원단과 레일에 호환됩니다.',
+    specs: [
+      { label: '소재', value: '스테인리스 스틸' },
+      { label: '구성', value: '10개입 1세트' },
+      { label: '내경', value: '4cm' },
+      { label: '호환', value: '일반형 커튼레일' },
+    ],
+  },
+  {
+    id: 11,
+    name: '씽(중간-역방향)',
+    category: 'component',
+    subcategory: '씽',
+    image: '/placeholder.png',
+    shortDescription: '부드러운 개폐감의 스테인리스 커튼링',
+    description:
+      '내구성이 뛰어난 스테인리스 소재로 제작되어 오랜 사용에도 변형이 적습니다. 다양한 커튼 원단과 레일에 호환됩니다.',
+    specs: [
+      { label: '소재', value: '스테인리스 스틸' },
+      { label: '구성', value: '10개입 1세트' },
+      { label: '내경', value: '4cm' },
+      { label: '호환', value: '일반형 커튼레일' },
+    ],
+  },
+  {
+    id: 12,
+    name: '씽(하)',
+    category: 'component',
+    subcategory: '씽',
+    image: '/placeholder.png',
+    shortDescription: '부드러운 개폐감의 스테인리스 커튼링',
+    description:
+      '내구성이 뛰어난 스테인리스 소재로 제작되어 오랜 사용에도 변형이 적습니다. 다양한 커튼 원단과 레일에 호환됩니다.',
+    specs: [
+      { label: '소재', value: '스테인리스 스틸' },
+      { label: '구성', value: '10개입 1세트' },
+      { label: '내경', value: '4cm' },
+      { label: '호환', value: '일반형 커튼레일' },
+    ],
+  },
+  {
+    id: 13,
+    name: '씽(하-역방향)',
     category: 'component',
     subcategory: '씽',
     image: '/placeholder.png',
