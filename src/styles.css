@@ -1,0 +1,35 @@
+@import "tailwindcss" source("../");
+
+:root {
+  --color-linen: #fbf8f4;
+  --color-clay: #b9835c;
+  --color-clay-dark: #9c6a45;
+  --color-ink: #2c2622;
+  --color-taupe: #8a7f74;
+  --color-border: #e9e2d9;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family:
+    'Noto Sans KR',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+}
+
+code {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+::selection {
+  background: var(--color-clay);
+  color: #fff;
+}
