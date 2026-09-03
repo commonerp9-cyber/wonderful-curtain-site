@@ -11,6 +11,11 @@ import products, { categories, subcategories } from '@/data/products'
 import type { Category } from '@/data/products'
 
 export const Route = createFileRoute('/')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category: (search.category as string | undefined) ?? undefined,
+    subcategory: (search.subcategory as string | undefined) ?? undefined,
+    q: (search.q as string | undefined) ?? undefined,
+  }),
   component: ProductsIndex,
 })
 
@@ -38,21 +43,32 @@ const heroSlides = [
 ]
 
 function ProductsIndex() {
-  const [query, setQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState<Category | 'all'>(
-    'all',
-  )
-  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(
-    null,
-  )
+  const search = Route.useSearch()
+  const navigate = Route.useNavigate()
   const [navOpen, setNavOpen] = useState(false)
+
+  const query = search.q ?? ''
+  const activeCategory = (search.category as Category | undefined) ?? 'all'
+  const activeSubcategory = search.subcategory ?? null
+
+  const setQuery = (value: string) => {
+    navigate({
+      search: (prev) => ({ ...prev, q: value || undefined }),
+      replace: true,
+    })
+  }
 
   const handleSelect = (
     category: Category | 'all',
     subcategory: string | null = null,
   ) => {
-    setActiveCategory(category)
-    setActiveSubcategory(subcategory)
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        category: category === 'all' ? undefined : category,
+        subcategory: subcategory ?? undefined,
+      }),
+    })
   }
 
   const filtered = useMemo(() => {
@@ -176,6 +192,10 @@ function ProductsIndex() {
                   key={product.id}
                   to="/products/$productId"
                   params={{ productId: product.id.toString() }}
+                  search={{
+                    category: activeCategory === 'all' ? undefined : activeCategory,
+                    subcategory: activeSubcategory ?? undefined,
+                  }}
                   className="group block rounded-2xl border border-[var(--color-border)] overflow-hidden hover:shadow-lg hover:border-[var(--color-clay)] transition-all bg-white"
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[var(--color-linen)]">
