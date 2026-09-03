@@ -70,15 +70,15 @@ function Footer() {
         <div className="flex flex-col gap-2.5 text-sm text-[var(--color-taupe)]">
           <div className="flex items-center gap-2">
             <MapPin size={16} className="text-[var(--color-clay)] shrink-0" />
-            <span>서울특별시 종로구 창덕궁길 12, 3층</span>
+            <span>경기도 광주시 순암로 367-48 (중대동) A, B동</span>
           </div>
           <div className="flex items-center gap-2">
             <Phone size={16} className="text-[var(--color-clay)] shrink-0" />
-            <span>02-1234-5678</span>
+            <span>(031)797-0208</span>
           </div>
           <div className="flex items-center gap-2">
             <Mail size={16} className="text-[var(--color-clay)] shrink-0" />
-            <span>info@yeollincurtain.co.kr</span>
+            <span>yeollinchang@naver.com</span>
           </div>
         </div>
       </div>
