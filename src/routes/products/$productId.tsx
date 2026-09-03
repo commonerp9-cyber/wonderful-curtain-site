@@ -3,6 +3,10 @@ import { ArrowLeft } from 'lucide-react'
 import products, { categories } from '../../data/products'
 
 export const Route = createFileRoute('/products/$productId')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category: (search.category as string | undefined) ?? undefined,
+    subcategory: (search.subcategory as string | undefined) ?? undefined,
+  }),
   component: RouteComponent,
   loader: async ({ params }) => {
     const product = products.find(
@@ -17,6 +21,7 @@ export const Route = createFileRoute('/products/$productId')({
 
 function RouteComponent() {
   const product = Route.useLoaderData()
+  const search = Route.useSearch()
   const categoryLabel = categories.find((c) => c.id === product.category)
     ?.label
 
@@ -25,6 +30,10 @@ function RouteComponent() {
       <div className="max-w-5xl mx-auto px-5 md:px-8 py-8 md:py-12">
         <Link
           to="/"
+          search={{
+            category: search.category,
+            subcategory: search.subcategory,
+          }}
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-taupe)] hover:text-[var(--color-clay-dark)] mb-8 transition-colors"
         >
           <ArrowLeft size={16} />
