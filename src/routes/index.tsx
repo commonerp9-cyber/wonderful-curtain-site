@@ -16,24 +16,29 @@ export const Route = createFileRoute('/')({
 
 const heroSlides = [
   {
+    title: '생활암막 컬렉션',
+    subtitle: '내추럴한 텍스처의 완성',
+    image: '/images/hero-1.jpg',
+  },
+  {
+    title: '생활암막 컬렉션',
+    subtitle: '내추럴한 텍스처의 완성',
+    image: '/images/hero-2.jpg',
+  },
+  {
     title: '암막커튼 컬렉션',
     subtitle: '완벽한 빛 차단과 편안한 휴식',
-    image: '/images/curtain-hero-livingroom.jpg',
+    image: '/images/hero-3.jpg',
+  },
+  {
+    title: '암막커튼 컬렉션',
+    subtitle: '완벽한 빛 차단과 편안한 휴식',
+    image: '/images/hero-4.jpg',
   },
   {
     title: '쉬어커튼 컬렉션',
     subtitle: '자연광을 담는 부드러운 감성',
-    image: '/images/curtain-room-beige.jpg',
-  },
-  {
-    title: '생활암막커튼 컬렉션',
-    subtitle: '내추럴한 텍스처의 완성',
-    image: '/images/curtain-room-brown.jpg',
-  },
-  {
-    title: '커튼 부자재 & 제작 기계',
-    subtitle: '전문가의 손길을 더하는 도구',
-    image: '/images/curtain-room-blue.jpg',
+    image: '/images/hero-5.jpg',
   },
 ]
 
