@@ -6,6 +6,7 @@ export const Route = createFileRoute('/products/$productId')({
   validateSearch: (search: Record<string, unknown>) => ({
     category: (search.category as string | undefined) ?? undefined,
     subcategory: (search.subcategory as string | undefined) ?? undefined,
+    mini: (search.mini as string | undefined) ?? undefined,
   }),
   component: RouteComponent,
   loader: async ({ params }) => {
@@ -33,6 +34,7 @@ function RouteComponent() {
           search={{
             category: search.category,
             subcategory: search.subcategory,
+            mini: search.mini,
           }}
           className="inline-flex items-center gap-1.5 text-sm text-[var(--color-taupe)] hover:text-[var(--color-clay-dark)] mb-8 transition-colors"
         >
@@ -54,6 +56,7 @@ function RouteComponent() {
           <div className="w-full md:w-1/2">
             <span className="text-xs font-medium text-[var(--color-clay-dark)]">
               {categoryLabel} · {product.subcategory}
+              {product.minicategory ? ` · ${product.minicategory}` : ''}
             </span>
             <h1 className="font-display text-2xl md:text-3xl mt-2 mb-4">
               {product.name}
