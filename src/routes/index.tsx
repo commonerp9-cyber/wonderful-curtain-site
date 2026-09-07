@@ -7,13 +7,14 @@ import {
   SlidersHorizontal,
   X,
 } from 'lucide-react'
-import products, { categories, subcategories } from '@/data/products'
+import products, { categories, subcategories, minicategories } from '@/data/products'
 import type { Category } from '@/data/products'
 
 export const Route = createFileRoute('/')({
   validateSearch: (search: Record<string, unknown>) => ({
     category: (search.category as string | undefined) ?? undefined,
     subcategory: (search.subcategory as string | undefined) ?? undefined,
+    mini: (search.mini as string | undefined) ?? undefined,
     q: (search.q as string | undefined) ?? undefined,
   }),
   component: ProductsIndex,
@@ -31,7 +32,7 @@ const heroSlides = [
     image: '/images/curtain-room-beige.jpg',
   },
   {
-    title: '리넨커튼 컬렉션',
+    title: '생활암막커튼 컬렉션',
     subtitle: '내추럴한 텍스처의 완성',
     image: '/images/curtain-room-brown.jpg',
   },
@@ -50,6 +51,7 @@ function ProductsIndex() {
   const query = search.q ?? ''
   const activeCategory = (search.category as Category | undefined) ?? 'all'
   const activeSubcategory = search.subcategory ?? null
+  const activeMinicategory = search.mini ?? null
 
   const setQuery = (value: string) => {
     navigate({
@@ -61,12 +63,14 @@ function ProductsIndex() {
   const handleSelect = (
     category: Category | 'all',
     subcategory: string | null = null,
+    mini: string | null = null,
   ) => {
     navigate({
       search: (prev) => ({
         ...prev,
         category: category === 'all' ? undefined : category,
         subcategory: subcategory ?? undefined,
+        mini: mini ?? undefined,
       }),
     })
   }
@@ -78,13 +82,17 @@ function ProductsIndex() {
         activeCategory === 'all' || product.category === activeCategory
       const matchesSubcategory =
         !activeSubcategory || product.subcategory === activeSubcategory
+      const matchesMinicategory =
+        !activeMinicategory || product.minicategory === activeMinicategory
       const matchesQuery =
         q.length === 0 ||
         product.name.toLowerCase().includes(q) ||
         product.shortDescription.toLowerCase().includes(q)
-      return matchesCategory && matchesSubcategory && matchesQuery
+      return (
+        matchesCategory && matchesSubcategory && matchesMinicategory && matchesQuery
+      )
     })
-  }, [query, activeCategory, activeSubcategory])
+  }, [query, activeCategory, activeSubcategory, activeMinicategory])
 
   return (
     <div className="min-h-screen bg-white">
@@ -130,6 +138,7 @@ function ProductsIndex() {
           <NavPanel
             activeCategory={activeCategory}
             activeSubcategory={activeSubcategory}
+            activeMinicategory={activeMinicategory}
             onSelect={handleSelect}
             variant="flyout"
           />
@@ -153,8 +162,9 @@ function ProductsIndex() {
               <NavPanel
                 activeCategory={activeCategory}
                 activeSubcategory={activeSubcategory}
-                onSelect={(category, subcategory) => {
-                  handleSelect(category, subcategory)
+                activeMinicategory={activeMinicategory}
+                onSelect={(category, subcategory, mini) => {
+                  handleSelect(category, subcategory, mini)
                   setNavOpen(false)
                 }}
                 variant="inline"
@@ -195,6 +205,7 @@ function ProductsIndex() {
                   search={{
                     category: activeCategory === 'all' ? undefined : activeCategory,
                     subcategory: activeSubcategory ?? undefined,
+                    mini: activeMinicategory ?? undefined,
                   }}
                   className="group block rounded-2xl border border-[var(--color-border)] overflow-hidden hover:shadow-lg hover:border-[var(--color-clay)] transition-all bg-white"
                 >
@@ -212,6 +223,7 @@ function ProductsIndex() {
                           ?.label
                       }{' '}
                       · {product.subcategory}
+                      {product.minicategory ? ` · ${product.minicategory}` : ''}
                     </span>
                     <h2 className="text-lg font-semibold mt-1 mb-1.5">
                       {product.name}
@@ -285,12 +297,18 @@ function HeroCarousel() {
 function NavPanel({
   activeCategory,
   activeSubcategory,
+  activeMinicategory,
   onSelect,
   variant,
 }: {
   activeCategory: Category | 'all'
   activeSubcategory: string | null
-  onSelect: (category: Category | 'all', subcategory?: string | null) => void
+  activeMinicategory: string | null
+  onSelect: (
+    category: Category | 'all',
+    subcategory?: string | null,
+    mini?: string | null,
+  ) => void
   variant: 'flyout' | 'inline'
 }) {
   const [openCategory, setOpenCategory] = useState<Category | null>(null)
@@ -317,6 +335,66 @@ function NavPanel({
 
   useEffect(() => clearCloseTimeout, [])
 
+  const renderSubcategoryList = (category: Category) => {
+    const subs = subcategories[category]
+    const isActiveCategory = activeCategory === category
+
+    return (
+      <>
+        {subs.map((sub) => {
+          const minis = minicategories[sub]
+          const isActiveSub = isActiveCategory && activeSubcategory === sub
+
+          return (
+            <div key={sub}>
+              <button
+                onClick={() => {
+                  onSelect(category, sub, null)
+                  if (variant === 'flyout') setOpenCategory(null)
+                }}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                  isActiveSub && !activeMinicategory
+                    ? 'bg-[var(--color-clay)] text-white font-medium'
+                    : 'text-[var(--color-ink)] hover:bg-[var(--color-linen)]'
+                }`}
+              >
+                {sub}
+              </button>
+
+              {minis && (
+                <div className="ml-3 mt-0.5 flex flex-col gap-0.5 border-l border-[var(--color-border)] pl-2.5">
+                  {minis.map((mini) => {
+                    const isActiveMini =
+                      isActiveCategory &&
+                      activeSubcategory === sub &&
+                      activeMinicategory === mini
+
+                    return (
+                      <button
+                        key={mini}
+                        onClick={() => {
+                          onSelect(category, sub, mini)
+                          if (variant === 'flyout') setOpenCategory(null)
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                          isActiveMini
+                            ? 'bg-[var(--color-clay)] text-white font-medium'
+                            : 'text-[var(--color-taupe)] hover:bg-[var(--color-linen)]'
+                        }`}
+                      >
+                        {mini}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </>
+    )
+  }
+
   return (
     <nav className="lg:sticky lg:top-24">
       <p className="text-xs font-semibold text-[var(--color-taupe)] mb-4 tracking-wide">
@@ -336,7 +414,6 @@ function NavPanel({
           </button>
         </li>
         {categories.map((category) => {
-          const subs = subcategories[category.id]
           const isOpen = openCategory === category.id
           const isActiveCategory = activeCategory === category.id
           const isFlyout = variant === 'flyout'
@@ -373,44 +450,17 @@ function NavPanel({
 
               {isFlyout && isOpen && (
                 <div
-                  className="absolute right-full top-0 mr-2 w-40 rounded-xl border border-[var(--color-border)] bg-white shadow-lg p-1.5 z-10"
+                  className="absolute right-full top-0 mr-2 w-48 max-h-[70vh] overflow-y-auto rounded-xl border border-[var(--color-border)] bg-white shadow-lg p-1.5 z-10"
                   onMouseEnter={() => openSubmenu(category.id)}
                   onMouseLeave={() => scheduleCloseSubmenu(category.id)}
                 >
-                  {subs.map((sub) => (
-                    <button
-                      key={sub}
-                      onClick={() => {
-                        onSelect(category.id, sub)
-                        setOpenCategory(null)
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        isActiveCategory && activeSubcategory === sub
-                          ? 'bg-[var(--color-clay)] text-white font-medium'
-                          : 'text-[var(--color-ink)] hover:bg-[var(--color-linen)]'
-                      }`}
-                    >
-                      {sub}
-                    </button>
-                  ))}
+                  {renderSubcategoryList(category.id)}
                 </div>
               )}
 
               {!isFlyout && isOpen && (
                 <div className="mt-1 ml-4 flex flex-col gap-1 border-l border-[var(--color-border)] pl-3">
-                  {subs.map((sub) => (
-                    <button
-                      key={sub}
-                      onClick={() => onSelect(category.id, sub)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        isActiveCategory && activeSubcategory === sub
-                          ? 'bg-[var(--color-clay)] text-white font-medium'
-                          : 'text-[var(--color-ink)] hover:bg-[var(--color-linen)]'
-                      }`}
-                    >
-                      {sub}
-                    </button>
-                  ))}
+                  {renderSubcategoryList(category.id)}
                 </div>
               )}
             </li>
