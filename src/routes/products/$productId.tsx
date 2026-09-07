@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import products, { categories } from '../../data/products'
 import type { Category } from '../../data/products'
 import { Header, NavPanel, MobileNavOverlay } from '@/components/SiteNav'
+import { ProductImageSlider } from '@/components/ProductImageSlider'
 
 export const Route = createFileRoute('/products/$productId')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -106,13 +107,20 @@ function RouteComponent() {
 
           <div className="flex flex-col md:flex-row gap-10 md:gap-14">
             <div className="w-full md:w-1/2">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--color-linen)]">
-                <img
-                  src={product.image}
+              {product.images && product.images.length > 1 ? (
+                <ProductImageSlider
+                  images={product.images}
                   alt={product.name}
-                  className="w-full h-full object-cover"
                 />
-              </div>
+              ) : (
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--color-linen)]">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="w-full md:w-1/2">

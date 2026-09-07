@@ -7,6 +7,7 @@ export interface Product {
   subcategory: string
   minicategory?: string
   image: string
+  images?: Array<string>
   shortDescription: string
   description: string
   specs: Array<{ label: string; value: string }>
@@ -176,7 +177,13 @@ const products: Array<Product> = [
     category: 'curtain',
     subcategory: '생활암막커튼',
     minicategory: '누베아',
-    image: '/placeholder.png',
+    image: '/images/nubea-1.jpg',
+    images: [
+      '/images/nubea-1.jpg',
+      '/images/nubea-2.jpg',
+      '/images/nubea-3.jpg',
+      '/images/nubea-4.jpg',
+    ],
     shortDescription: '자연스러운 질감의 생활 암막 커튼',
     description:
       '일상적으로 사용하기 좋은 자연스러운 텍스처의 생활 암막 커튼입니다.',
